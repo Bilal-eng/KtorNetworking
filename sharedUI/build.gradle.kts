@@ -37,6 +37,9 @@ kotlin {
         }
         commonMain.dependencies {
             api(project(":sharedLogic"))
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
