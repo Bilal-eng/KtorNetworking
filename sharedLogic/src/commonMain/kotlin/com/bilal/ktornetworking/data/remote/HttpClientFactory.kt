@@ -1,6 +1,7 @@
 package com.bilal.ktornetworking.data.remote
 
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -13,6 +14,10 @@ import kotlinx.serialization.json.Json
 internal expect fun platformEngine(): HttpClientEngineFactory<*>
 
 internal fun createNewsHttpClient(): HttpClient = HttpClient(platformEngine()) {
+    configureNewsClient()
+}
+
+internal fun HttpClientConfig<*>.configureNewsClient() {
     expectSuccess = true
 
     defaultRequest {
