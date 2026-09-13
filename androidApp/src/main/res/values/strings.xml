@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">KtorNetworking</string>
+    <string name="news_title">Uzay Haberleri</string>
+    <string name="news_loading">Haberler yükleniyor…</string>
+    <string name="news_error">Haberler yüklenemedi. Lütfen tekrar deneyin.</string>
+    <string name="news_empty">Henüz haber bulunamadı.</string>
+    <string name="news_retry">Tekrar dene</string>
 </resources>

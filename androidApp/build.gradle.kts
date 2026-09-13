@@ -12,7 +12,14 @@ kotlin {
 }
 dependencies {
     implementation(project(":sharedLogic"))
-    implementation(project(":sharedUI"))
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
