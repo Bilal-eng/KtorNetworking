@@ -8,6 +8,10 @@ import com.bilal.ktornetworking.domain.repository.NewsRepository
 internal class NewsRepositoryImpl(
     private val apiService: ApiService,
 ) : NewsRepository {
+    override suspend fun getNewsById(newsId: Int): News {
+        return apiService.getNewsById(newsId).toDomain()
+    }
+
     override suspend fun getNews(): List<News> {
         val response = apiService.getNews()
         return response.results.map { it.toDomain() }

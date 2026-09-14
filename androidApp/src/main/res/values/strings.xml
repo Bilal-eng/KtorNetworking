@@ -7,5 +7,9 @@
     <string name="news_retry">Tekrar dene</string>
     <string name="news_detail_title">Haber Detayı</string>
     <string name="news_back">Geri</string>
-    <string name="news_selected_id">Seçilen haber: %1$d</string>
+    <string name="news_detail_loading">Haber yükleniyor…</string>
+    <string name="news_detail_error">Haber yüklenemedi veya artık mevcut değil. Tekrar deneyebilirsiniz.</string>
+    <string name="news_author_unknown">Yazar belirtilmemiş</string>
+    <string name="news_authors">Yazar: %1$s</string>
+    <string name="news_published_at">Yayın tarihi: %1$s</string>
 </resources>

@@ -110,6 +110,7 @@ class NewsListViewModelTest {
     private fun createViewModel(load: suspend () -> List<News>): NewsListViewModel {
         val repository = object : NewsRepository {
             override suspend fun getNews(): List<News> = load()
+            override suspend fun getNewsById(newsId: Int): News = error("Not used in list tests")
         }
         return NewsListViewModel(repository).also { store.put("news", it) }
     }
