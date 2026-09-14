@@ -36,13 +36,16 @@ import com.bilal.ktornetworking.domain.model.News
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun NewsListRoute(viewModel: NewsListViewModel = koinViewModel()) {
+fun NewsListRoute(
+    onNewsClick: (Int) -> Unit,
+    viewModel: NewsListViewModel = koinViewModel(),
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    NewsListScreen(uiState = uiState, onRetry = viewModel::loadNews)
+    NewsListScreen(uiState = uiState, onRetry = viewModel::loadNews, onNewsClick = onNewsClick)
 }
 
 @Composable
-fun NewsListScreen(uiState: NewsListUiState, onRetry: () -> Unit) {
+fun NewsListScreen(uiState: NewsListUiState, onRetry: () -> Unit, onNewsClick: (Int) -> Unit) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().safeDrawingPadding()) {
             Text(
@@ -74,7 +77,7 @@ fun NewsListScreen(uiState: NewsListUiState, onRetry: () -> Unit) {
                                 verticalArrangement = Arrangement.spacedBy(16.dp),
                             ) {
                                 items(items = uiState.news, key = { it.id }) { news ->
-                                    NewsCard(news)
+                                    NewsCard(news, onClick = { onNewsClick(news.id) })
                                 }
                             }
                         }
@@ -97,8 +100,8 @@ private fun StatusContent(content: @Composable () -> Unit) {
 }
 
 @Composable
-private fun NewsCard(news: News) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+private fun NewsCard(news: News, onClick: () -> Unit) {
+    Card(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
         AsyncImage(
             model = news.imageUrl,
             contentDescription = null,
@@ -135,19 +138,19 @@ private fun NewsCard(news: News) {
 @Preview(showBackground = true)
 @Composable
 private fun LoadingPreview() {
-    MaterialTheme { NewsListScreen(NewsListUiState.Loading, onRetry = {}) }
+    MaterialTheme { NewsListScreen(NewsListUiState.Loading, onRetry = {}, onNewsClick = {}) }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun ErrorPreview() {
-    MaterialTheme { NewsListScreen(NewsListUiState.Error, onRetry = {}) }
+    MaterialTheme { NewsListScreen(NewsListUiState.Error, onRetry = {}, onNewsClick = {}) }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun EmptyPreview() {
-    MaterialTheme { NewsListScreen(NewsListUiState.Success(emptyList()), onRetry = {}) }
+    MaterialTheme { NewsListScreen(NewsListUiState.Success(emptyList()), onRetry = {}, onNewsClick = {}) }
 }
 
 @Preview(showBackground = true)
@@ -163,5 +166,5 @@ private fun NewsPreview() {
         sourceName = "Örnek Haber Kaynağı",
         sourceUrl = "",
     )
-    MaterialTheme { NewsListScreen(NewsListUiState.Success(listOf(news)), onRetry = {}) }
+    MaterialTheme { NewsListScreen(NewsListUiState.Success(listOf(news)), onRetry = {}, onNewsClick = {}) }
 }

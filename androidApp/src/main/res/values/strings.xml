@@ -5,4 +5,7 @@
     <string name="news_error">Haberler yüklenemedi. Lütfen tekrar deneyin.</string>
     <string name="news_empty">Henüz haber bulunamadı.</string>
     <string name="news_retry">Tekrar dene</string>
+    <string name="news_detail_title">Haber Detayı</string>
+    <string name="news_back">Geri</string>
+    <string name="news_selected_id">Seçilen haber: %1$d</string>
 </resources>
