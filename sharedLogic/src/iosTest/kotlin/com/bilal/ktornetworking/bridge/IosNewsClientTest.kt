@@ -66,6 +66,57 @@ class IosNewsClientTest {
     }
 
     @Test
+    fun detailRetryKeepsSelectedIdAfterFailure() = runTest {
+        val ids = mutableListOf<Int>()
+        var failures = 0
+        var result: News? = null
+        val client = IosNewsClient(fake(detail = { id ->
+            ids += id
+            if (ids.size == 1) error("Network failure")
+            news
+        }), backgroundScope)
+
+        client.getNewsById(42, onSuccess = { result = it }, onError = { failures++ })
+        runCurrent()
+        assertEquals(1, failures)
+        assertEquals(null, result)
+
+        client.getNewsById(42, onSuccess = { result = it }, onError = { failures++ })
+        runCurrent()
+        assertEquals(listOf(42, 42), ids)
+        assertEquals(news, result)
+        assertEquals(1, failures)
+    }
+
+    @Test
+    fun cancelledDetailDoesNotAffectNextSelection() = runTest {
+        var cancelled = false
+        var oldCallbackCalled = false
+        var result: News? = null
+        val selectedNews = news.copy(id = 43)
+        val client = IosNewsClient(fake(detail = { id ->
+            if (id == 42) {
+                try { awaitCancellation() } finally { cancelled = true }
+            }
+            selectedNews
+        }), backgroundScope)
+
+        val request = client.getNewsById(42,
+            onSuccess = { oldCallbackCalled = true },
+            onError = { oldCallbackCalled = true })
+        runCurrent()
+        request.cancel()
+        client.getNewsById(43,
+            onSuccess = { result = it },
+            onError = { error("Unexpected failure") })
+        runCurrent()
+
+        assertEquals(true, cancelled)
+        assertFalse(oldCallbackCalled)
+        assertEquals(selectedNews, result)
+    }
+
+    @Test
     fun closingClientCancelsAllRequests() = runTest {
         var cancellations = 0
         val scope = CoroutineScope(SupervisorJob() + StandardTestDispatcher(testScheduler))
