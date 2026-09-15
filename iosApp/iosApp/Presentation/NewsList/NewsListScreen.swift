@@ -7,10 +7,6 @@ struct NewsListScreen: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Uzay Haberleri")
-                .font(.largeTitle.bold())
-                .padding()
-
             Group {
                 switch state {
                 case .loading:
@@ -31,7 +27,10 @@ struct NewsListScreen: View {
                         ScrollView {
                             LazyVStack(spacing: 16) {
                                 ForEach(news, id: \.id) { article in
-                                    NewsCard(news: article)
+                                    NavigationLink(value: NewsDetailDestination(newsId: article.id)) {
+                                        NewsCard(news: article)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
                             }
                             .padding()
@@ -104,10 +103,16 @@ private struct NewsCard: View {
 }
 
 #Preview("Success") {
-    NewsListScreen(state: .success([
-        News(id: 42, title: "Yeni uzay görevi başladı",
-             description: "Bilim insanları Dünya'yı gözlemlemek için yeni bir uydu gönderdi.",
-             imageUrl: "", authors: ["Örnek yazar"], publishedAt: "2026-09-15T10:00:00Z",
-             sourceName: "Örnek kaynak", sourceUrl: "https://example.com")
-    ]), onRetry: {})
+    NavigationStack {
+        NewsListScreen(state: .success([
+            News(id: 42, title: "Yeni uzay görevi başladı",
+                 description: "Bilim insanları Dünya'yı gözlemlemek için yeni bir uydu gönderdi.",
+                 imageUrl: "", authors: ["Örnek yazar"], publishedAt: "2026-09-15T10:00:00Z",
+                 sourceName: "Örnek kaynak", sourceUrl: "https://example.com")
+        ]), onRetry: {})
+        .navigationTitle("Uzay Haberleri")
+        .navigationDestination(for: NewsDetailDestination.self) { destination in
+            NewsDetailScreen(newsId: destination.newsId)
+        }
+    }
 }
