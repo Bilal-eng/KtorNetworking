@@ -1,20 +1,15 @@
 This is a Kotlin Multiplatform project targeting Android, iOS.
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+* [/androidApp](./androidApp/src/main) contains the native Android application built with Jetpack Compose.
 
-* [/sharedLogic](./sharedLogic/src) is for the code that will be shared between app targets in the project.
-  The most important subfolder is [commonMain](./sharedLogic/src/commonMain/kotlin). If preferred, you
-  can add code to the platform-specific folders here too.
+* [/iosApp](./iosApp/iosApp) contains the native iOS application built with SwiftUI.
 
-* [/sharedUI](./sharedUI/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./sharedUI/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./sharedUI/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./sharedUI/src/jvmMain/kotlin)
-    folder is the appropriate location.
+* [/sharedLogic](./sharedLogic/src) contains the Kotlin code shared between Android and iOS:
+  - [commonMain](./sharedLogic/src/commonMain/kotlin): domain models, repositories, API service, DTOs, Ktor configuration and Koin setup.
+  - [androidMain](./sharedLogic/src/androidMain/kotlin): Android-specific implementations, including the OkHttp engine.
+  - [iosMain](./sharedLogic/src/iosMain/kotlin): iOS-specific implementations, including the Darwin engine and Swift-facing news client.
+
+UI and presentation state are implemented separately in each native application.
 
 ### Running the apps
 
