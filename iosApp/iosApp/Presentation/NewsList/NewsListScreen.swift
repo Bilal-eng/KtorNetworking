@@ -112,7 +112,7 @@ private struct NewsCard: View {
         ]), onRetry: {})
         .navigationTitle("Uzay Haberleri")
         .navigationDestination(for: NewsDetailDestination.self) { destination in
-            NewsDetailScreen(newsId: destination.newsId)
+            Text("Haber #\(destination.newsId)")
         }
     }
 }
